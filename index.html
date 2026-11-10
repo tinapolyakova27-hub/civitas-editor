@@ -967,10 +967,11 @@ async function gFit(slides,rep){
   });
  }finally{project=saved;host.remove()}
 }
+function gPlural(n,a,b,c){const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<12||h>14)?b:c}
 function gShowReport(rep,slides){
  const el=$('buildReport');if(!el)return;
  const kinds=slides.map(s=>types[s.layout][0]);
- let html=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><strong>Собрано ${slides.length} слайдов</strong><button id="closeReport" aria-label="Скрыть отчёт" style="padding:2px 8px">×</button></div><div>${esc(kinds.join(' · '))}</div>`;
+ let html=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><strong>Собрано ${slides.length} ${gPlural(slides.length,'слайд','слайда','слайдов')}</strong><button id="closeReport" aria-label="Скрыть отчёт" style="padding:2px 8px">×</button></div><div>${esc(kinds.join(' · '))}</div>`;
  if(rep.fixes.length)html+=`<div style="margin-top:6px"><b>Поправлено в тексте:</b> ${esc(rep.fixes.join('; '))}.</div>`;
  if(rep.bad.length)html+=`<div style="margin-top:6px"><b>Не помещается текст:</b> слайды ${rep.bad.join(', ')}. Сократите текст или разделите слайд.</div>`;
  for(const w of rep.warn)html+=`<div style="margin-top:6px">• ${esc(w)}</div>`;
@@ -990,7 +991,7 @@ $('buildReadyText').onclick=async()=>{
   const slides=createReadySlides($('readyText').value,photo,$('readyAlign').value,$('readyTheme').value,rep);
   await gFit(slides,rep);
   mutate(()=>{project={version:1,handle:project.handle,authorAvatar:project.authorAvatar||permanentAvatar,slides};selected=0});
-  $('readyTextDialog').close();gShowReport(rep,slides);toast('Готово: '+slides.length+' слайдов. Тексты сохранены.');
+  $('readyTextDialog').close();gShowReport(rep,slides);toast('Готово: '+slides.length+' '+gPlural(slides.length,'слайд','слайда','слайдов')+'. Тексты сохранены.');
  }catch(e){$('readyError').textContent=e.message}finally{btn.disabled=false;btn.textContent='Сгенерировать карусель'}
 };
 </script></body></html>
