@@ -701,4 +701,46 @@ new ResizeObserver(schedule).observe(stage);
 for(const el of stage.children)if(el!==canvas)new ResizeObserver(schedule).observe(el);
 addEventListener('resize',schedule);document.fonts.ready.then(schedule);schedule();
 })();
+</script><dialog id="readyTextDialog"><div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><h2 style="margin:0">Карусель из готовых текстов</h2><button id="closeReadyText">Закрыть</button></div><p style="line-height:1.6">Вставьте готовые тексты. Отделяйте слайды строкой <b>---</b> или заголовками «Слайд 1», «Слайд 2». Без разделителей каждый абзац станет отдельным слайдом. Длинные блоки разделятся автоматически, слова сохранятся.</p><label class="field"><span>Тексты слайдов</span><textarea id="readyText" rows="10" placeholder="Слайд 1&#10;Заголовок обложки&#10;Текст обложки&#10;&#10;---&#10;&#10;Слайд 2&#10;Следующий заголовок&#10;Текст слайда"></textarea></label><label class="upload">Фото первого слайда<input id="readyCover" type="file" accept="image/png,image/jpeg,image/webp"></label><div class="row"><label class="field"><span>Выравнивание</span><select id="readyAlign"><option value="left">По левому краю</option><option value="center">По центру</option></select></label><label class="field"><span>Чередование фонов</span><select id="readyTheme"><option value="mixed">Светлые и тёмные</option><option value="light">Только светлые</option></select></label></div><p class="small">Готовые формулировки не переписываются. Призыв и новые факты не добавляются. Сборка заменит текущую карусель; её можно отменить.</p><div id="readyError" role="status" style="color:#a12a2a;margin-bottom:12px"></div><button class="primary" id="buildReadyText">Создать карусель</button><button id="advancedAiBrief">Задание для ChatGPT</button></dialog><script>
+function splitReadyText(text,max=340){
+ const out=[];let rest=text.trim();
+ while(rest.length>max){let end=rest.lastIndexOf('\n',max);if(end<max*.35)end=rest.lastIndexOf(' ',max);if(end<1)end=rest.indexOf(' ',max);if(end<1){out.push(rest);rest='';break}out.push(rest.slice(0,end).trim());rest=rest.slice(end).trim()}
+ if(rest)out.push(rest);return out;
+}
+function readyTextBlocks(text){
+ const t=text.replace(/\r\n?/g,'\n').replace(/<br\s*\/?>/gi,'\n').trim();
+ if(!t)return [];
+ if(/^\s*-{3,}\s*$/m.test(t))return t.split(/^\s*-{3,}\s*$/m).map(x=>x.replace(/^\s*Слайд\s+\d+\s*[:.\-–—]?\s*\n?/i,'').trim()).filter(Boolean);
+ if(/^\s*Слайд\s+\d+\s*[:.\-–—]?\s*$/mi.test(t))return t.split(/^\s*Слайд\s+\d+\s*[:.\-–—]?\s*$/mi).map(x=>x.trim()).filter(Boolean);
+ return t.split(/\n\s*\n+/).map(x=>x.trim()).filter(Boolean);
+}
+function createReadySlides(text,photo,align,theme){
+ const blocks=readyTextBlocks(text),slides=[],palette=theme==='light'?['white','skin','cream']:['white','dark','skin','cream'];
+ for(const block of blocks){
+  const lines=block.split('\n');let title='',body=block;
+  if(lines.length>1&&lines[0].trim().length<=64){title=lines.shift().trim();body=lines.join('\n').trim()}
+  else if(block.length<=64){title=block;body=''}
+  const parts=body?splitReadyText(body):[''];
+  for(let j=0;j<parts.length;j++){
+   const first=slides.length===0,head=j===0?title:'';
+   slides.push({...defaults,layout:first?'cover':'statement',title:head,accent:'',subtitle:'',body:parts[j],quote:'',footer:'',items:[],rich:{},avatar:'',photo:first?photo:'',bg:first&&photo?'photo':palette[slides.length%palette.length],align,position:first&&photo?'bottom':'top',size:first?32:30,bodySize:16,overlay:82,shade:'bottom',photoX:50,photoY:50,photoZoom:100,showNumber:true});
+  }
+ }
+ if(slides.length>50)throw Error('Получается больше 50 слайдов. Разделите материал на две карусели.');
+ return slides;
+}
+$('aiTask').onclick=()=>$('readyTextDialog').showModal();
+$('closeReadyText').onclick=()=>$('readyTextDialog').close();
+$('advancedAiBrief').onclick=()=>{$('readyTextDialog').close();$('aiDialog').showModal()};
+$('buildReadyText').onclick=async()=>{
+ const btn=$('buildReadyText');$('readyError').textContent='';
+ if(!$('readyText').value.trim()){$('readyError').textContent='Вставьте тексты слайдов.';return}
+ btn.disabled=true;btn.textContent='Собираем…';
+ try{
+ const f=$('readyCover').files[0],photo=f?await readImage(f,2400):'';
+ const slides=createReadySlides($('readyText').value,photo,$('readyAlign').value,$('readyTheme').value);
+ mutate(()=>{project={version:1,handle:project.handle,authorAvatar:project.authorAvatar||permanentAvatar,slides};selected=0});
+ $('readyTextDialog').close();toast('Готово: '+slides.length+' слайдов. Тексты сохранены.');
+ }catch(e){$('readyError').textContent=e.message}finally{btn.disabled=false;btn.textContent='Создать карусель'}
+};
 </script></body></html>
