@@ -27,8 +27,8 @@ body{height:100dvh;display:flex;flex-direction:column}
 }
 @media print{html,body{height:auto;overflow:visible}body{display:block}.workspace,.stage{height:auto;overflow:visible}.canvas{zoom:1!important}}
 </style></head><body>
-<dialog id="readyTextDialog"><div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><h2 style="margin:0">Карусель из готовых текстов</h2><button id="closeReadyText">Закрыть</button></div><p style="line-height:1.6">Вставьте готовые тексты. Отделяйте слайды строкой <b>---</b> или заголовками «Слайд 1», «Слайд 2». Без разделителей каждый абзац станет отдельным слайдом. Длинные блоки разделятся автоматически, слова сохранятся.</p><label class="field"><span>Тексты слайдов</span><textarea id="readyText" rows="10" placeholder="Слайд 1&#10;Заголовок обложки&#10;Текст обложки&#10;&#10;---&#10;&#10;Слайд 2&#10;Следующий заголовок&#10;Текст слайда"></textarea></label><label class="upload">Фото первого слайда<input id="readyCover" type="file" accept="image/png,image/jpeg,image/webp"></label><div class="row"><label class="field"><span>Выравнивание</span><select id="readyAlign"><option value="left">По левому краю</option><option value="center">По центру</option></select></label><label class="field"><span>Чередование фонов</span><select id="readyTheme"><option value="mixed">Светлые и тёмные</option><option value="light">Только светлые</option></select></label></div><p class="small">Готовые формулировки не переписываются. Призыв и новые факты не добавляются. Сборка заменит текущую карусель; её можно отменить.</p><div id="readyError" role="status" style="color:#a12a2a;margin-bottom:12px"></div><button class="primary" id="buildReadyText">Сгенерировать карусель</button></dialog><header class="top"><div class="brand"><div class="logo"><i></i>CIVITAS</div><div class="muted">AI собирает · вы доводите · 1080 × 1350</div></div><div class="actions"><button id="aiTask"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:6px" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>Новая карусель</button><button id="undo" title="Отменить последнее изменение">↶ Отменить</button><button id="redo" title="Повторить отменённое изменение" disabled>↷ Повторить</button><button id="save">Сохранить проект</button><button class="primary" id="open">Открыть проект</button><button class="dark" id="pngOne">PNG слайда</button><button id="pngAll">Все PNG · ZIP</button></div></header>
-<div class="workspace"><aside class="rail"><div class="railhead"><span>Слайды <span id="count">8</span></span><button id="add" aria-label="Добавить слайд">+</button></div><div id="thumbs"></div><button class="primary" id="addBottom" style="width:100%">+ Слайд</button></aside><main class="stage"><div class="stagebar"><strong id="slideName">Слайд 1 из 8 · Обложка</strong><div><button id="prev" title="Переместить раньше">←</button><button id="next" title="Переместить позже">→</button><button id="duplicate">Копия</button><button id="remove" title="Удалить слайд">Удалить</button></div></div><div class="quicktools"><div hidden><span style="font-size:12px;font-weight:600">Фон слайда</span><div id="quickColors" class="swatches" style="margin-top:8px"><button class="swatch " data-quick-bg="white"><b style="background:#FFFFFF"></b>Белый</button><button class="swatch " data-quick-bg="skin"><b style="background:#E9E9E6"></b>Холодный светлый</button><button class="swatch " data-quick-bg="dark"><b style="background:#3A3A3A"></b>Тёмно-серый</button><button class="swatch " data-quick-bg="cream"><b style="background:#F4F1EA"></b>Молочный</button><button class="swatch " data-quick-bg="yellow"><b style="background:#F4C430"></b>Жёлтый</button><button class="swatch active" data-quick-bg="photo"><b style="background:#242424"></b>Фото</button></div></div><label>Композиция<select id="quickLayout"><option value="cover" selected="">Обложка</option><option value="statement">Крупный тезис</option><option value="list">Пункты</option><option value="icons">Текст с иконками</option><option value="cards">Карточки</option><option value="steps">Шаги</option><option value="quote">Цитата</option><option value="cta">Призыв</option></select></label><label>Выравнивание<select id="quickAlign"><option value="left">Слева</option><option value="center">По центру</option><option value="right">Справа</option></select></label><label>Заголовок<input id="quickTitleSize" type="number" min="20" max="64"></label><label>Текст<input id="quickBodySize" type="number" min="12" max="24"></label></div><div class="texttools hidden" id="texttools"><span id="textHint">Нажмите на текст слайда</span><div class="row"><button id="markText" class="primary">Жёлтая плашка</button><button id="unmarkText">Убрать плашку</button><select id="textFont" aria-label="Шрифт выделенного текста"><option value="">Шрифт…</option><option value="Inter">Inter</option><option value="Unbounded">Unbounded</option><option value="Playfair">Playfair Display</option></select></div><small>Выделите слово мышью. Без выделения оформление применяется ко всему выбранному блоку.</small></div><div class="canvas" id="canvas"></div><div id="status" class="status bad" role="status">Загрузите фоновое фото. Уменьшите текст или размер шрифта при необходимости.</div><div class="caption">Карусель уже собрана. Нажмите на текст слайда для правок. Выделите слово и нажмите правую кнопку мыши, чтобы изменить шрифт или плашку. Для новой темы нажмите «Новая карусель с AI». Для шрифтов и экспорта нужен интернет.</div></main><aside class="panel" id="panel"></aside></div>
+<dialog id="readyTextDialog"><div style="display:flex;justify-content:space-between;align-items:center;gap:16px"><h2 style="margin:0">Карусель из готовых текстов</h2><button id="closeReadyText">Закрыть</button></div><p style="line-height:1.6">Вставьте тексты слайдов как есть: каждый абзац станет слайдом, слова не меняются. Можно разделять слайды строкой <b>---</b>. Подпись к посту вставьте после строки <b>Подпись к посту:</b>, из неё возьмём ключевое слово и цитату для финала. Слово в [квадратных скобках] встанет на жёлтую плашку. Текст из ChatGPT в формате ОБЛОЖКА / СЛАЙД тоже подходит.</p><label class="field"><span>Тексты слайдов</span><textarea id="readyText" rows="12" placeholder="В свидетельстве о рождении дедушки ошибка в фамилии?&#10;Такие неточности могут потребовать отдельного решения.&#10;&#10;Что проверяем:&#10;• Актовую запись&#10;• Свидетельство&#10;• Архивные данные&#10;&#10;Если нашли ошибку, напишите нам в Direct.&#10;&#10;Подпись к посту:&#10;…"></textarea></label><label class="upload">Фото первого слайда<input id="readyCover" type="file" accept="image/png,image/jpeg,image/webp"></label><div class="row"><label class="field"><span>Выравнивание</span><select id="readyAlign"><option value="left">По левому краю</option><option value="center">По центру</option></select></label><label class="field"><span>Чередование фонов</span><select id="readyTheme"><option value="mixed">Светлые и тёмные</option><option value="light">Только светлые</option></select></label></div><p class="small">Генератор сам выберет шаблон каждого слайда, заголовок из ваших слов, плашку и чередование фонов, а в конце добавит финал с аватаром и ключевым словом. Новые факты не добавляются. Сборка заменит текущую карусель, её можно отменить.</p><div id="readyError" role="status" style="color:#a12a2a;margin-bottom:12px"></div><button class="primary" id="buildReadyText">Сгенерировать карусель</button></dialog><header class="top"><div class="brand"><div class="logo"><i></i>CIVITAS</div><div class="muted">AI собирает · вы доводите · 1080 × 1350</div></div><div class="actions"><button id="aiTask"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:6px" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>Новая карусель</button><button id="undo" title="Отменить последнее изменение">↶ Отменить</button><button id="redo" title="Повторить отменённое изменение" disabled>↷ Повторить</button><button id="save">Сохранить проект</button><button class="primary" id="open">Открыть проект</button><button class="dark" id="pngOne">PNG слайда</button><button id="pngAll">Все PNG · ZIP</button></div></header>
+<div class="workspace"><aside class="rail"><div class="railhead"><span>Слайды <span id="count">8</span></span><button id="add" aria-label="Добавить слайд">+</button></div><div id="thumbs"></div><button class="primary" id="addBottom" style="width:100%">+ Слайд</button></aside><main class="stage"><div class="stagebar"><strong id="slideName">Слайд 1 из 8 · Обложка</strong><div><button id="prev" title="Переместить раньше">←</button><button id="next" title="Переместить позже">→</button><button id="duplicate">Копия</button><button id="remove" title="Удалить слайд">Удалить</button></div></div><div class="quicktools"><div hidden><span style="font-size:12px;font-weight:600">Фон слайда</span><div id="quickColors" class="swatches" style="margin-top:8px"><button class="swatch " data-quick-bg="white"><b style="background:#FFFFFF"></b>Белый</button><button class="swatch " data-quick-bg="skin"><b style="background:#E9E9E6"></b>Холодный светлый</button><button class="swatch " data-quick-bg="dark"><b style="background:#3A3A3A"></b>Тёмно-серый</button><button class="swatch " data-quick-bg="cream"><b style="background:#F4F1EA"></b>Молочный</button><button class="swatch " data-quick-bg="yellow"><b style="background:#F4C430"></b>Жёлтый</button><button class="swatch active" data-quick-bg="photo"><b style="background:#242424"></b>Фото</button></div></div><label>Композиция<select id="quickLayout"><option value="cover" selected="">Обложка</option><option value="statement">Крупный тезис</option><option value="list">Пункты</option><option value="icons">Текст с иконками</option><option value="cards">Карточки</option><option value="steps">Шаги</option><option value="quote">Цитата</option><option value="cta">Призыв</option></select></label><label>Выравнивание<select id="quickAlign"><option value="left">Слева</option><option value="center">По центру</option><option value="right">Справа</option></select></label><label>Заголовок<input id="quickTitleSize" type="number" min="20" max="64"></label><label>Текст<input id="quickBodySize" type="number" min="12" max="24"></label></div><div class="texttools hidden" id="texttools"><span id="textHint">Нажмите на текст слайда</span><div class="row"><button id="markText" class="primary">Жёлтая плашка</button><button id="unmarkText">Убрать плашку</button><select id="textFont" aria-label="Шрифт выделенного текста"><option value="">Шрифт…</option><option value="Inter">Inter</option><option value="Unbounded">Unbounded</option><option value="Playfair">Playfair Display</option></select></div><small>Выделите слово мышью. Без выделения оформление применяется ко всему выбранному блоку.</small></div><div class="canvas" id="canvas"></div><div id="buildReport" class="status" role="status" style="display:none"></div><div id="status" class="status bad" role="status">Загрузите фоновое фото. Уменьшите текст или размер шрифта при необходимости.</div><div class="caption">Карусель уже собрана. Нажмите на текст слайда для правок. Выделите слово и нажмите правую кнопку мыши, чтобы изменить шрифт или плашку. Для новой темы нажмите «Новая карусель с AI». Для шрифтов и экспорта нужен интернет.</div></main><aside class="panel" id="panel"></aside></div>
 <dialog id="templateDialog"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Добавить слайд</h2><button id="closeDialog">Закрыть</button></div><p class="small">Выберите композицию. Тексты, иконки и фон можно изменить.</p><div class="templates" id="templates"><button data-type="cover"><strong>Обложка</strong><span class="small">Фото, заголовок и акцент</span></button><button data-type="statement"><strong>Крупный тезис</strong><span class="small">Заголовок и пояснение</span></button><button data-type="list"><strong>Пункты</strong><span class="small">Список с галочками</span></button><button data-type="icons"><strong>Текст с иконками</strong><span class="small">Иконка, название и пояснение</span></button><button data-type="cards"><strong>Карточки</strong><span class="small">Две или четыре карточки</span></button><button data-type="steps"><strong>Шаги</strong><span class="small">Нумерованная последовательность</span></button><button data-type="quote"><strong>Цитата</strong><span class="small">Крупная цитата и автор</span></button><button data-type="cta"><strong>Призыв</strong><span class="small">Аватар, цитата и ключевое слово</span></button></div></dialog><input type="file" id="projectInput" accept=".json,.html,.htm,application/json,text/html" hidden=""><div class="toast hidden" id="toast" role="status"></div>
 <dialog id="aiDialog"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><h2 style="margin:0">Из задачи в готовую карусель</h2><button id="closeAi">Закрыть</button></div><p style="line-height:1.65">Прикрепите короткую инструкцию к сообщению в ChatGPT вместе со статьёй и фото. Полученный JSON откройте кнопкой «Открыть проект». Редактор прикреплять не нужно.</p><p class="small">Это подготовка задания для AI в чате. Внутри файла генерация не запускается.</p><label class="field"><span>Задача и исходный текст</span><textarea id="aiBrief" rows="5" placeholder="Вставьте текст поста или расшифровку. Добавьте цель и пожелания."></textarea></label><div class="row"><label class="field"><span>Количество слайдов</span><select id="aiCount"><option value="auto">AI выберет: 6–8 слайдов</option>5<option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label><label class="field"><span>Ключевое слово</span><input type="text" id="aiKeyword" value="ПАСПОРТ"></label></div><label class="field"><span>Что получит читатель</span><input type="text" id="aiOffer" value="Инструкцию по получению гражданства Румынии"></label><div class="actions"><button class="primary" id="copyAi">1. Скопировать задание</button><button id="downloadAiTemplate">2. Скачать инструкцию</button></div><p class="small">3. Прикрепите инструкцию и фото в ChatGPT, укажите статью. Полученный JSON откройте здесь через «Открыть проект», проверьте слайды и выгрузите PNG.</p><textarea id="aiPromptFallback" rows="6" class="hidden" aria-label="Готовое задание для копирования"></textarea></dialog>
 <div id="textMenu" class="textmenu hidden" role="menu"><button id="contextMark" class="primary" role="menuitem">Добавить жёлтую плашку</button><button id="contextUnmark" role="menuitem">Убрать жёлтую плашку</button><div style="border-top:1px solid #ddd;margin:4px 0"></div><span class="small" style="padding:4px 10px">Шрифт выделенного текста</span><button data-context-font="Inter" role="menuitem">Inter</button><button data-context-font="Unbounded" role="menuitem">Unbounded</button><button data-context-font="Playfair" role="menuitem">Playfair Display</button><button id="contextClose" role="menuitem">Закрыть</button></div><input type="file" id="canvasIconUpload" accept="image/png,image/jpeg,image/webp" hidden=""><script id="ai-instructions" type="text/plain">CIVITAS: СБОРКА ГОТОВОЙ КАРУСЕЛИ ИЗ ЗАДАЧИ
@@ -110,7 +110,7 @@ function slideHTML(s,i,total=project.slides.length){const c=colors[s.bg],yellow=
 if(s.layout==='cover'){content=heading(s)+(s.body?`<div class="bodytext">${richHTML(s,'body')}</div>`:'');extra=`<div class="coverarrow arrow">${icon('arrow')}</div>`}
 else if(s.layout==='statement'){content=heading(s);extra=`<div class="bodytext bottomtext">${richHTML(s,'body')}</div>`}
 else if(s.layout==='quote'){content=`<div class="quote">«${richHTML(s,'quote')}»</div>${profile(s)}<div class="bodytext">${richHTML(s,'body')}</div>`}
-else if(s.layout==='cta'){content=profile(s)+`<div class="quote">«${richHTML(s,'quote')}»</div><div class="bodytext">${richHTML(s,'body')}</div>`;extra=`<div class="cta"><div class="ctacaption">Напишите в комментариях</div><div class="keyword"><span>${richHTML(s,'accent')}</span><div class="arrow">${icon('arrow')}</div></div></div><div class="foot">${richHTML(s,'footer')}</div>`}
+else if(s.layout==='cta'){content=profile(s)+(s.quote?`<div class="quote">«${richHTML(s,'quote')}»</div>`:'')+(s.body?`<div class="bodytext">${richHTML(s,'body')}</div>`:'');extra=`<div class="cta"><div class="ctacaption">Напишите в комментариях</div><div class="keyword"><span>${richHTML(s,'accent')}</span><div class="arrow">${icon('arrow')}</div></div></div><div class="foot">${richHTML(s,'footer')}</div>`}
 else{const card=s.layout==='cards';content=heading(s)+`<div class="${card?'cards':'items'}">`+s.items.map((it,j)=>{const copy=`<div class="itemcopy"><div class="itemtitle">${richHTML(s,'item.'+j+'.title')}</div>${it.text?`<div class="itemtext">${richHTML(s,'item.'+j+'.text')}</div>`:''}</div>`;if(card)return `<div class="card"><div class="iconbadge" data-icon-item="${j}">${itemIcon(it)}</div>${copy}</div>`;return `<div class="${s.layout==='list'?'listitem':s.layout==='steps'?'stepitem':'iconitem'}">${s.layout==='steps'?`<div class="stepbadge">${j+1}</div>`:s.layout==='list'?icon('check'):`<div class="iconbadge" data-icon-item="${j}">${itemIcon(it)}</div>`}${copy}</div>`}).join('')+'</div>';extra=`<div class="bodytext bottomtext">${richHTML(s,'body')}</div>`}
 const pos=s.layout==='cover'?(s.position==='bottom'?'top:auto;bottom:84px':s.position==='middle'?'top:50%;transform:translateY(-50%)':'top:62px'):'';
 return `<div class="slide" data-layout="${s.layout}" data-align="${s.align}" data-theme="${s.bg}" style="${style}">${bg}<div class="meta"><span>${s.showNumber?`${String(i+1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`:''}</span><span>${esc(project.handle)}</span></div><div class="content ${s.align}" style="${pos}">${content}</div>${extra}</div>`}
@@ -126,7 +126,7 @@ function panel(){let s=current();$('panel').innerHTML=`<h2>Настройки с
 function refresh(){redraw();panel()}
 function mutate(fn,rebuild=true){checkpoint();fn();persist();if(rebuild)refresh();else redraw()}
 function seed(layout){let s={...defaults,items:[],layout};if(['list','icons','cards','steps'].includes(layout))s.items=Array.from({length:layout==='cards'?2:3},(_,i)=>({title:`Пункт ${i+1}`,text:'Короткое пояснение',icon:['file','search','check'][i]}));if(layout==='cover'){s.bg='photo';s.position='bottom';s.size=38;s.body=''}if(['cta','quote'].includes(layout)){s.title='Денис Сохор';s.subtitle='Гражданство Румынии';s.size=30;s.accent='ПАСПОРТ';s.avatar=project.authorAvatar||project.slides.find(x=>x.avatar)?.avatar||''}return s}
-function diagnostics(el,s){let issues=[];const r=el.getBoundingClientRect(),blocks=[...el.querySelectorAll(':scope > .content,:scope > .bottomtext,:scope > .cta,:scope > .foot')].filter(x=>x.textContent.trim());for(let b of blocks){const q=b.getBoundingClientRect();if(q.bottom>r.bottom-12||q.top<r.top+47)issues.push('Текст выходит за рабочую область.')}for(let i=0;i<blocks.length;i++)for(let j=i+1;j<blocks.length;j++){let a=blocks[i].getBoundingClientRect(),b=blocks[j].getBoundingClientRect();if(a.top<b.bottom+12&&b.top<a.bottom+12)issues.push('Блоки слишком близко или пересекаются.')}for(let e of el.querySelectorAll('.title,.accent,.subtitle,.itemtitle,.itemtext,.quote,.bodytext,.keyword span,.foot')){const q=e.getBoundingClientRect();if(q.right>r.right-20||q.left<r.left+20||e.scrollWidth>e.clientWidth+2)issues.push('Текст выходит за край.')}if(s.bg==='photo'&&!s.photo)issues.push('Загрузите фоновое фото.');if(['cta','quote'].includes(s.layout)&&!(project.authorAvatar||s.avatar))issues.push('Загрузите аватар автора.');return [...new Set(issues)]}
+function diagnostics(el,s){let issues=[];const r=el.getBoundingClientRect(),k=r.width/(el.offsetWidth||432)||1,blocks=[...el.querySelectorAll(':scope > .content,:scope > .bottomtext,:scope > .cta,:scope > .foot')].filter(x=>x.textContent.trim());for(let b of blocks){const q=b.getBoundingClientRect();if(q.bottom>r.bottom-12*k||q.top<r.top+47*k)issues.push('Текст выходит за рабочую область.')}for(let i=0;i<blocks.length;i++)for(let j=i+1;j<blocks.length;j++){let a=blocks[i].getBoundingClientRect(),b=blocks[j].getBoundingClientRect();if(a.top<b.bottom+12*k&&b.top<a.bottom+12*k)issues.push('Блоки слишком близко или пересекаются.')}for(let e of el.querySelectorAll('.title,.accent,.subtitle,.itemtitle,.itemtext,.quote,.bodytext,.keyword span,.foot')){const q=e.getBoundingClientRect();if(q.right>r.right-20*k||q.left<r.left+20*k||e.scrollWidth>e.clientWidth+2)issues.push('Текст выходит за край.')}if(s.bg==='photo'&&!s.photo)issues.push('Загрузите фоновое фото.');if(['cta','quote'].includes(s.layout)&&!(project.authorAvatar||s.avatar))issues.push('Загрузите аватар автора.');return [...new Set(issues)]}
 function checkCurrent(){let p=diagnostics($('canvas').firstElementChild,current());$('status').className='status'+(p.length?' bad':'');$('status').textContent=p.length?p.join(' ')+' Уменьшите текст или размер шрифта при необходимости.':'Текст помещается в рабочую область. Перед публикацией проверьте фото и содержание.';return p}
 $('thumbs').onclick=e=>{const plus=e.target.closest('[data-insert]');if(plus){addAt(+plus.dataset.insert);return}let b=e.target.closest('[data-slide]');if(b){selected=+b.dataset.slide;refresh()}};
 $('panel').addEventListener('focusin',e=>{if(e.target.dataset.key)checkpoint()});
@@ -702,9 +702,12 @@ for(const el of stage.children)if(el!==canvas)new ResizeObserver(schedule).obser
 addEventListener('resize',schedule);document.fonts.ready.then(schedule);schedule();
 })();
 </script><script>
-function splitReadyText(text,max=340){
+/* ===== Сборка карусели из готовых текстов SMM =====
+   Тексты не переписываются: генератор только раскладывает их по слайдам,
+   выбирает шаблон, строит заголовок из слов SMM и ставит одну плашку. */
+function splitReadyText(text,max=320){
  const out=[];let rest=text.trim();
- while(rest.length>max){let end=rest.lastIndexOf('\n',max);if(end<max*.35)end=rest.lastIndexOf(' ',max);if(end<1)end=rest.indexOf(' ',max);if(end<1){out.push(rest);rest='';break}out.push(rest.slice(0,end).trim());rest=rest.slice(end).trim()}
+ while(rest.length>max){let end=rest.lastIndexOf('\n',max);if(end<max*.35){const m=[...rest.slice(0,max).matchAll(/[.!?…]\s/g)].at(-1);end=m?m.index+1:-1}if(end<max*.35)end=rest.lastIndexOf(' ',max);if(end<1)end=rest.indexOf(' ',max);if(end<1){out.push(rest);rest='';break}out.push(rest.slice(0,end).trim());rest=rest.slice(end).trim()}
  if(rest)out.push(rest);return out;
 }
 function readyTextBlocks(text){
@@ -714,33 +717,280 @@ function readyTextBlocks(text){
  if(/^\s*Слайд\s+\d+\s*[:.\-–—]?\s*$/mi.test(t))return t.split(/^\s*Слайд\s+\d+\s*[:.\-–—]?\s*$/mi).map(x=>x.trim()).filter(Boolean);
  return t.split(/\n\s*\n+/).map(x=>x.trim()).filter(Boolean);
 }
-function createReadySlides(text,photo,align,theme){
- const blocks=readyTextBlocks(text),slides=[],palette=theme==='light'?['white','skin','cream']:['white','dark','skin','cream'];
- for(const block of blocks){
-  const lines=block.split('\n');let title='',body=block;
-  if(lines.length>1&&lines[0].trim().length<=64){title=lines.shift().trim();body=lines.join('\n').trim()}
-  else if(block.length<=64){title=block;body=''}
-  const parts=body?splitReadyText(body):[''];
-  for(let j=0;j<parts.length;j++){
-   const first=slides.length===0,head=j===0?title:'';
-   slides.push({...defaults,layout:first?'cover':'statement',title:head,accent:'',subtitle:'',body:parts[j],quote:'',footer:'',items:[],rich:{},avatar:'',photo:first?photo:'',bg:first&&photo?'photo':palette[slides.length%palette.length],align,position:first&&photo?'bottom':'top',size:first?32:30,bodySize:16,overlay:82,shade:'bottom',photoX:50,photoY:50,photoZoom:100,showNumber:true});
-  }
- }
- if(slides.length>50)throw Error('Получается больше 50 слайдов. Разделите материал на две карусели.');
+
+const GEN={
+ stop:new Set('в во на о об обо от до из изо у к ко с со за по под над при про для без через между перед после и а но или либо да же ли ни не бы что чтобы как так это этот эта эти этого тот та те то мы вы я ты он она они оно его её ее их им ему ей нас вас нам вам меня тебя себя свой своя свои своё своего наш наша наши ваш ваша ваши который которая которые где когда если чем уже ещё еще только тоже также поэтому ведь вот там тут есть был была были будет может могут нужно надо'.split(' ')),
+ filler:/^(важный момент|важно|обратите внимание|итак|кстати|поэтому|например|главное|напоминаем|внимание|смотрите|короче)\s*[:,.!—–-]?\s*/i,
+ lead:/^(и|а|но|или|так что|ведь|зато|однако|причём|причем)\s+/i,
+ adj:/(ый|ий|ой|ая|яя|ое|ее|ые|ие|ого|его|ому|ему|ым|им|ую|юю|ых|ыми|ими)$/i,
+ verb:/(ем|им|ет|ит|ют|ут|ат|ят|ешь|ишь|ете|ите)$/i,
+ bullet:/^\s*(?:[-–—•·*▪●✓✔➖→]|\p{Extended_Pictographic}️?|\d{1,2}[.)])\s+/u,
+ numbered:/^\s*\d{1,2}[.)]\s+/,
+ cta:/(?:^|[^а-яё])(?:напиши|пиши|оставь|нажми|жми|переходи|перейди|запиши|звони|позвони|отправь)(?:те)?(?:сь)?(?![а-яё])[^.!?]*?(?:direct|директ|коммент|личк|сообщ|ссылк|профил|шапк|консультац|«|")|(?:^|[^a-zа-яё])(?:direct|директ)(?![a-zа-яё])/i,
+ icons:[[/апостил|закон|юрид|защит|гарант|адвокат/i,'shield'],[/архив|папк|досье|дело/i,'folder'],[/поиск|найт|ищ|провер|свер/i,'search'],[/срок|дата|календар|дедлайн/i,'calendar'],[/время|час|быстр|ожидан|минут/i,'clock'],[/семь|дед|бабуш|родител|предк|поколен|дет|мам|пап/i,'people'],[/письм|запрос|почт|mail|сообщ/i,'mail'],[/город|место|адрес|румын|стран|област|посольств|консульств|бухарест/i,'pin'],[/книг|перевод|реестр|запис|метрик/i,'book'],[/ссылк|связ|цепоч/i,'link'],[/документ|свидетельств|справк|паспорт|акт|копи|оригинал|досье/i,'file'],[/человек|клиент|заявител/i,'person'],[/важн|внимани|ошибк|риск/i,'info']]
+};
+const gBare=w=>String(w).toLowerCase().replace(/[^0-9a-zа-яё-]/gi,'').replace(/^-+|-+$/g,'');
+const gStop=w=>{const b=gBare(w);return !b||GEN.stop.has(b)};
+const gCap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const gNorm=s=>String(s).toLowerCase().replace(/[^0-9a-zа-яё]/gi,'');
+const gWords=s=>s.trim().split(/\s+/).filter(w=>/[0-9a-zа-яё]/i.test(w));
+function gSentences(t){return (t.replace(/\s*\n+\s*/g,' ').match(/[^.!?…]+(?:[.!?…]+|$)/g)||[]).map(x=>x.trim()).filter(x=>/[0-9a-zа-яё]/i.test(x))}
+function gAfterFirstSentence(t){const m=t.match(/^[\s\S]*?[.!?…]+(?=\s|$)/);return m?t.slice(m[0].length).trim():''}
+
+/* Короткий заголовок из слов SMM (2–7 слов, без новых слов). */
+function gHeadlineFrom(sentence){
+ let s=String(sentence||'').trim().replace(GEN.filler,'').replace(GEN.lead,'');
+ const q=/\?\s*$/.test(s)?'?':/!\s*$/.test(s)?'!':'';
+ const fin=(x,keepQ)=>{let r=gCap(x.replace(GEN.lead,'').replace(/[\s.,;:—–-]+$/,'').replace(/^[\s,;:—–-]+/,'').trim());if(keepQ&&q&&!/[?!]$/.test(r))r+=q;return r};
+ const short=x=>gWords(x).length<=7;
+ if(short(s))return fin(s.replace(/\s*(?::|\s[—–])\s+(?=\S)/g,'\n'),true);
+ const ci=s.search(/:\s/);
+ if(ci>0){const before=s.slice(0,ci),after=s.slice(ci+1),bw=gWords(before);
+  if(GEN.verb.test(gBare(bw.at(-1)||''))||bw.length>6||!gWords(after).length){s=after.trim()}else return fin(before,false)}
+ s=s.replace(GEN.filler,'').replace(GEN.lead,'');
+ if(short(s))return fin(s.replace(/\s*(?::|\s[—–])\s+(?=\S)/g,'\n'),true);
+ const parts=s.split(/\s*:\s+|\s[—–]\s/);
+ if(parts.length>1){for(const p of [parts[0],parts.at(-1)]){const n=gWords(p).length;if(n>=2&&n<=6)return fin(p,true)}}
+ const ws=gWords(s),n=ws.length;
+ const ok=(a,b)=>{const f=ws[a],l=ws[b-1];if(gStop(f)&&gBare(f)!=='не')return false;if(gStop(l))return false;if(b<n&&GEN.adj.test(gBare(l)))return false;if(b<n&&/,$/.test(l))return false;return true};
+ const order=q==='?'?[[3,'s'],[4,'s'],[2,'s'],[5,'s'],[5,'p'],[4,'p'],[3,'p']]:[[5,'p'],[4,'p'],[3,'p'],[3,'s'],[4,'s'],[2,'p'],[2,'s']];
+ for(const [k,side] of order){if(k>n)continue;const a=side==='s'?n-k:0;if(ok(a,a+k))return fin(ws.slice(a,a+k).join(' '),side==='s')}
+ return fin(ws.slice(0,5).join(' '),false);
+}
+/* Плашка на смысловое слово в конце заголовка; [слово] от SMM имеет приоритет. */
+function gSplitAccent(h){
+ h=String(h||'').trim();
+ const m=h.match(/^([\s\S]*?)\[([^\]]+)\]([\s\S]*)$/);
+ if(m)return {title:m[1].trim(),accent:m[2].trim(),subtitle:m[3].trim()};
+ const toks=h.split(/(\s+)/),wi=toks.map((t,i)=>/\S/.test(t)?i:-1).filter(i=>i>=0);
+ if(wi.length<2)return {title:'',accent:h,subtitle:''};
+ let k=wi.length-1;while(k>0&&gStop(toks[wi[k]]))k--;
+ if(k===0)k=wi.length-1;
+ let cut=wi[k];
+ const p=wi[k-1];
+ if(k>=3&&p!=null&&!gStop(toks[p])&&!/\n/.test(toks[p+1])&&!/[,:;]$/.test(toks[p])&&(gBare(toks[p])+gBare(toks[wi[k]])).length<=14)cut=p;
+ return {title:toks.slice(0,cut).join('').trim(),accent:toks.slice(cut).join('').trim(),subtitle:''};
+}
+function gSize(h,cover){const n=(h.title+h.accent+h.subtitle).length;return (n<=14?40:n<=24?38:n<=36?34:n<=50?32:30)+(cover?0:-2)}
+function gIcon(t,i){for(const [re,ic] of GEN.icons)if(re.test(t))return ic;return ['file','search','check','info'][i%4]}
+function gItem(line){const t=line.replace(GEN.bullet,'').trim();const m=t.match(/^(.{2,42}?)(?:\s*:\s+|\s+[—–-]\s+)(.+)$/);return m?{title:gCap(m[1].trim()),text:gCap(m[2].trim())}:{title:gCap(t),text:''}}
+/* Разметка: [плашка], **широкий**, _курсив_. Возвращает чистый текст и rich-runs. */
+function gRuns(src,base,markFont){
+ const runs=[],re=/\[([^\]]+)\]|\*\*([^*]+)\*\*|(?<![\p{L}\p{N}])_([^_]+)_(?![\p{L}\p{N}])/gu;let last=0,m;
+ while((m=re.exec(src))){if(m.index>last)runs.push({text:src.slice(last,m.index),mark:false,font:base});
+  if(m[1]!=null)runs.push({text:m[1],mark:true,font:markFont||base});else if(m[2]!=null)runs.push({text:m[2],mark:false,font:'Unbounded'});else runs.push({text:m[3],mark:false,font:'Playfair'});last=re.lastIndex}
+ if(last<src.length)runs.push({text:src.slice(last),mark:false,font:base});
+ const text=runs.map(r=>r.text).join('');
+ return {text,runs:runs.some(r=>r.mark||r.font!==base)?runs:null};
+}
+function gPrep(raw){
+ let t=String(raw).replace(/\r\n?/g,'\n').replace(/<br\s*\/?>/gi,'\n').replace(/ /g,' ');
+ let caption='';
+ const cm=t.match(/^[ \t]*(?:подпись к посту|подпись|текст поста|caption)[ \t]*:?[ \t]*/im);
+ if(cm&&(cm[0].includes(':')||/^\s*$/.test(t.slice(cm.index+cm[0].length).split('\n')[0]))){caption=t.slice(cm.index+cm[0].length).trim();t=t.slice(0,cm.index)}
+ t=t.replace(/^\s*(?:сделай|собери|создай|сгенерируй)[^\n]*(?:карусел|слайд)[^\n]*\n/i,'');
+ return {t:t.trim(),caption};
+}
+function gFix(t,rep){
+ let a=0,b=0;
+ t=t.replace(/([а-яёa-z0-9»)])([.!?])(?=[А-ЯЁA-Z«])/g,(m,x,y)=>{a++;return x+y+' '});
+ t=t.replace(/([^\s,:;])[ \t]+[—–][ \t]+(?=\S)/g,(m,x,at,all)=>{b++;const from=Math.max(all.lastIndexOf('\n',at),...['.','!','?'].map(c=>all.lastIndexOf(c,at)));return x+(all.slice(from+1,at).includes(':')?', ':': ')});
+ if(a)rep.fixes.push(`Добавлен пробел после точки: ${a}`);
+ if(b)rep.fixes.push(`Длинное тире заменено двоеточием: ${b}`);
+ return t;
+}
+/* Разбор одного блока: обычный текст, список или цитата. */
+function gAnalyze(block){
+ const lines=block.split('\n').map(x=>x.trim()).filter(Boolean);
+ const qm=block.trim().match(/^[«“"]([\s\S]{8,240}?)[»”"]\s*(?:\n\s*[—–-]?\s*([^\n]{2,60}))?$/);
+ if(qm)return {kind:'quote',quote:qm[1].trim(),author:(qm[2]||'').trim()};
+ let heading='',rest=lines;
+ const ex=lines.findIndex(l=>/^заголовок\s*:/i.test(l));
+ if(ex>=0){heading=lines[ex].replace(/^заголовок\s*:\s*/i,'');rest=lines.filter((_,i)=>i!==ex).map(l=>l.replace(/^текст\s*:\s*/i,''))}
+ else if(lines.length>1&&!GEN.bullet.test(lines[0])&&gWords(lines[0]).length<=7&&lines[0].length<=60&&!/[.,;:]$/.test(lines[0])){heading=lines[0];rest=lines.slice(1)}
+ const bul=rest.map((l,i)=>GEN.bullet.test(l)?i:-1).filter(i=>i>=0);
+ let items=null,intro=[],outro=[],numbered=false;
+ if(bul.length>=2){items=bul.map(i=>rest[i]);intro=rest.slice(0,bul[0]);outro=rest.slice(bul.at(-1)+1).filter(l=>!GEN.bullet.test(l));numbered=items.some(l=>GEN.numbered.test(l))}
+ else{const k=rest.findIndex(l=>/:$/.test(l));const after=k>=0?rest.slice(k+1):[];if(k>=0&&after.length>=3&&after.length<=6&&after.every(l=>l.length<=70)){items=after;intro=rest.slice(0,k+1)}}
+ if(items)return {kind:'items',heading,intro:intro.join('\n'),outro:outro.join('\n'),items:items.map(gItem),numbered};
+ return {kind:'text',heading,body:rest.join('\n')};
+}
+function gColors(n,theme,after){
+ if(n<=0)return [];
+ const pool=theme==='light'?['white','skin','cream','yellow']:['dark','cream','yellow'];
+ const ok=seq=>seq[0]!==after&&seq.every((c,i)=>!i||c!==seq[i-1])&&seq.filter(c=>c==='yellow').length<=2&&(theme==='light'?seq.at(-1)!=='white':(n<3||pool.every(c=>seq.includes(c)))&&seq.at(-1)!=='cream');
+ for(let k=0;k<3000;k++){const seq=Array.from({length:n},()=>pool[Math.random()*pool.length|0]);if(ok(seq))return seq}
+ return Array.from({length:n},(_,i)=>theme==='light'?['skin','cream'][i%2]:['dark','cream'][i%2]);
+}
+function gBase(align,o){return {...defaults,title:'',accent:'',subtitle:'',body:'',quote:'',footer:'',items:[],rich:{},avatar:'',photo:'',bg:'cream',align,position:'top',size:32,bodySize:16,overlay:82,shade:'bottom',photoX:50,photoY:50,photoZoom:100,showNumber:true,...o}}
+function gWithBody(s,text){const r=gRuns(text||'','Inter','Inter');s.body=r.text;if(r.runs)s.rich={...s.rich,body:r.runs};return s}
+function gHead(s,h,cover){const p=gSplitAccent(String(h||'').trim().replace(/[\s.,;:—–-]+$/,''));s.title=p.title;s.accent=p.accent;s.subtitle=p.subtitle;s.size=gSize(p,cover);return s}
+
+function gTextSlides(a,align,skip){
+ const text=a.body||'',out=[];
+ if(!a.heading&&!text.trim())return out;
+ const parts=text?splitReadyText(text):[''];
+ parts.forEach((part,j)=>{
+  const sents=gSentences(part);
+  const head=j===0&&a.heading?a.heading:gHeadlineFrom(sents[j===0&&skip&&sents.length>1?1:0]||part);
+  const s=gHead(gBase(align,{layout:'statement'}),head,false);
+  if(a.heading&&j===0&&!part&&gWords(head).length>3)s.size=Math.min(s.size+4,42);
+  out.push(gWithBody(s,part));
+ });
+ return out;
+}
+function gItemSlides(a,align){
+ let heading=a.heading,body=[a.intro,a.outro].filter(Boolean).join('\n');
+ if(!heading&&a.intro){const intro=a.intro.trim();if(gWords(intro).length<=7&&!intro.includes('\n')){heading=intro;body=a.outro}else heading=gHeadlineFrom(gSentences(intro)[0])}
+ const its=a.items,detail=its.every(i=>i.text),seq=a.numbered||its.some(i=>/(?:^|[^а-яё])(сначала|затем|потом|после этого|далее|шаг|этап)(?![а-яё])/i.test(i.title+' '+i.text));
+ const chunks=[];for(let i=0;i<its.length;i+=its.length>5?4:5)chunks.push(its.slice(i,i+(its.length>5?4:5)));
+ return chunks.map((chunk,j)=>{
+  const layout=seq&&chunk.length<=4?'steps':detail&&(chunk.length===2||chunk.length===4)?'cards':detail&&chunk.length<=3?'icons':'list';
+  const s=gBase(align,{layout,items:chunk.map((it,k)=>({...it,icon:gIcon(it.title+' '+it.text,k),image:''})),bodySize:chunk.length>3||detail?15:16});
+  if(j===0&&heading)gHead(s,heading,false);
+  return gWithBody(s,j===chunks.length-1?body:'');
+ });
+}
+function gQuoteSlide(a,align){const s=gBase(align,{layout:'quote',title:'Денис Сохор',subtitle:'Гражданство Румынии',quote:a.quote,size:28,avatar:project.authorAvatar||''});if(a.author&&!/денис/i.test(a.author))s.title=a.author;return s}
+function gFinal(ctas,caption,rep,align){
+ const all=[...ctas,caption].join('\n');
+ const km=all.match(/(?:напиши|пиши|оставь|отправь)(?:те)?\s+(?:слово\s+)?[«"“„']([^»"”'\n]{2,24})[»"”']/i)||all.match(/(?:кодовое\s+)?слово\s+[«"“„']?([A-Za-zА-ЯЁа-яё0-9+-]{2,24})/i);
+ let kw=km?km[1].trim().toUpperCase():'';
+ const pm=all.match(/(?:в ответ|и мы|мы)\s[^.!?\n]*?(?:пришл|отправ|получ|дади|расскаж)[^.!?\n]*/i);
+ let promise=pm?gCap(pm[0].trim().replace(GEN.lead,'')):'';
+ const ql=caption.split('\n').map(l=>l.trim()).find(l=>/^(?:⚠️|⚠|❗️|❗|‼️|💬|☝️|📌)/u.test(l));
+ let quote=ql?ql.replace(/^[\p{Extended_Pictographic}️\s]+/u,'').replace(/\s[—–]\s/g,': ').trim():'';
+ if(quote.length>140)quote='';
+ if(!kw){kw='ПАСПОРТ';rep.warn.push('Ключевое слово для комментариев не найдено, на финале стоит «ПАСПОРТ». Проверьте.')}
+ if(!promise)promise=defaults.footer;
+ if(ctas.some(c=>/direct|директ/i.test(c))&&km)rep.warn.push('В тексте призыв «напишите в Direct», а на финале «Напишите в комментариях». Решите, какой оставить.');
+ if(!ctas.length&&!caption)rep.warn.push('В тексте не было призыва: добавлен стандартный финал с ключевым словом.');
+ const s=gBase(align,{layout:'cta',bg:'white',title:'Денис Сохор',subtitle:'Гражданство Румынии',accent:kw,quote,footer:promise,size:quote.length>90?24:26,bodySize:15,avatar:project.authorAvatar||''});
+ const kwRe=new RegExp('[«"“„\']'+kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'[»"”\']','i');
+ return gWithBody(s,ctas.filter(c=>!(kwRe.test(c)&&/коммент/i.test(c))).join(' '));
+}
+
+/* Формат из ChatGPT: ОБЛОЖКА / СЛАЙД / ФИНАЛ (как в ПРОМПТ-карусель.md). */
+function gHeadRich(s,markup){
+ const src=markup.split(/\s+\/\s+/).join('\n');
+ const r=gRuns(src,'Inter','Unbounded');
+ s.title=r.text;s.accent='';s.subtitle='';
+ if(r.runs)s.rich={...s.rich,title:r.runs};else s.rich={...s.rich,title:[{text:r.text,mark:false,font:'Inter'}]};
+ const lines=r.text.split('\n'),longest=Math.max(...lines.map(l=>l.length));
+ s.size=longest<=9?40:longest<=12?36:longest<=16?32:28;
+ return s;
+}
+function gBuildStructured(t,photo,align,rep){
+ const cover={},list=[],fin={};let target=cover;
+ for(const line of t.split('\n')){const m=line.match(/^\s*([А-ЯЁ][А-ЯЁ ]{1,20}?)\s*:\s*(.*)$/);if(!m)continue;const key=m[1].trim(),v=m[2].trim();
+  if(key==='ОБЛОЖКА'){target=cover;cover.h=v}else if(key==='СЛАЙД'){target={type:v};list.push(target)}else if(key==='ФИНАЛ'){target=fin}else target[key]=v}
+ const slides=[],colorMap={'серый':'dark','светлый':'cream','жёлтый':'yellow','желтый':'yellow'};
+ const pos={'сверху':'top','снизу':'bottom','по центру':'middle'}[(cover['ПОЛОЖЕНИЕ']||'').toLowerCase()]||(photo?'bottom':'top');
+ const cAlign={'слева':'left','по центру':'center','справа':'right'}[(cover['ВЫРАВНИВАНИЕ']||'').toLowerCase()]||align;
+ const c=gHeadRich(gBase(cAlign,{layout:'cover',bg:photo?'photo':'dark',photo,position:pos}),cover.h||'');
+ const shift=parseInt(cover['СДВИГ ФОТО'],10);if(!isNaN(shift))c.photoY=Math.max(0,Math.min(100,shift));
+ slides.push(c);
+ const auto=gColors(list.length,'mixed');
+ list.forEach((x,i)=>{
+  const [type,color]=x.type.split('|').map(v=>v.trim().toLowerCase());
+  const bg=colorMap[color]||auto[i];
+  const items=v=>(v||'').split(';').map(y=>y.trim()).filter(Boolean).map((y,k)=>({...gItem(y),icon:gIcon(y,k),image:''}));
+  let s;
+  if(type.startsWith('чек')){s=gBase(align,{layout:'list',bg,items:items(x['ПУНКТЫ'])});gWithBody(s,[x['ТЕКСТ'],x['ВЫВОД']].filter(Boolean).join('\n'))}
+  else if(type.startsWith('схем')){s=gBase(align,{layout:'steps',bg,items:items(x['ШАГИ'])});gWithBody(s,x['ВЫВОД']||'')}
+  else{s=gBase(align,{layout:'statement',bg});gWithBody(s,x['ТЕКСТ']||'')}
+  gHeadRich(s,x['ЗАГОЛОВОК']||'');s.size=Math.min(s.size,34);
+  slides.push(s);
+ });
+ const f=gBase(align,{layout:'cta',bg:'white',title:'Денис Сохор',subtitle:'Гражданство Румынии',accent:(fin['СЛОВО']||'ПАСПОРТ').toUpperCase(),quote:(fin['ЦИТАТА']||'').replace(/^[«"]|[»"]$/g,''),footer:fin['ОБЕЩАНИЕ']||defaults.footer,size:24,bodySize:15,avatar:project.authorAvatar||''});
+ gWithBody(f,fin['ПОМОЩЬ']||'');slides.push(f);
+ rep.mode='Формат ChatGPT (ОБЛОЖКА / СЛАЙД)';
  return slides;
 }
+
+function createReadySlides(raw,photo,align,theme,rep){
+ rep=rep||{fixes:[],warn:[]};
+ let {t,caption}=gPrep(raw);
+ if(/^\s*ОБЛОЖКА\s*:/m.test(t))return gBuildStructured(gFix(t,{fixes:[],warn:[]}),photo,align,rep);
+ rep.mode='Тексты SMM';
+ t=gFix(t,rep);
+ const ctas=[],units=[];
+ for(const b of readyTextBlocks(t)){
+  const keep=[];
+  for(const line of b.split('\n')){const sents=line.match(/[^.!?…]+(?:[.!?…]+|$)/g)||[line];const kept=sents.filter(x=>{if(GEN.cta.test(x)){ctas.push(x.trim());return false}return true}).join('').trim();if(kept)keep.push(kept)}
+  const nb=keep.join('\n').trim();if(nb)units.push(nb);
+ }
+ if(!units.length)throw Error('Не нашлось текста для слайдов. Проверьте, что вставлены тексты, а не только подпись к посту.');
+ /* Обложка */
+ const cover=gBase(align,{layout:'cover',bg:photo?'photo':'dark',photo,position:photo?'bottom':'top'});
+ let first=gAnalyze(units[0]),skipFirst=false;
+ if(first.kind==='text'&&first.heading){
+  gHead(cover,first.heading,true);
+  if(first.body.length<=160){gWithBody(cover,first.body);units.shift()}else units[0]=first.body;
+ }else{
+  const s1=gSentences(units[0])[0]||units[0];
+  const h=gHeadlineFrom(s1);gHead(cover,h,true);
+  if(gNorm(h)===gNorm(s1.replace(GEN.filler,''))){const rest=gAfterFirstSentence(units[0]);if(rest)units[0]=rest;else units.shift()}
+  else if(gSentences(units[0]).length===1&&first.kind==='text'){gWithBody(cover,units[0]);units.shift()}
+  else skipFirst=true;
+ }
+ /* Смысловые слайды */
+ const middle=[];
+ units.forEach((u,i)=>{const a=gAnalyze(u);
+  if(a.kind==='quote')middle.push(gQuoteSlide(a,align));
+  else if(a.kind==='items')middle.push(...gItemSlides(a,align));
+  else middle.push(...gTextSlides(a,align,i===0&&skipFirst));
+ });
+ const colors=gColors(middle.length,theme,cover.bg);
+ middle.forEach((s,i)=>{if(s.layout!=='quote')s.bg=colors[i];else s.bg=colors[i]==='yellow'?'cream':colors[i]});
+ const slides=[cover,...middle,gFinal(ctas,caption,rep,align)];
+ if(slides.length>50)throw Error('Получается больше 50 слайдов. Разделите материал на две карусели.');
+ if(slides.length>10)rep.warn.push(`Получилось ${slides.length} слайдов. Instagram примет до 20, но лучше 6–10: подумайте, что объединить.`);
+ slides.forEach((s,i)=>{if(i&&!['cta','quote'].includes(s.layout)&&!s.title&&!s.accent)rep.warn.push(`Слайд ${i+1} без заголовка: в тексте не было вводной фразы. Добавьте заголовок, если нужен.`)});
+ if(!photo)rep.warn.push('Нет фото обложки: обложка тёмная. Добавьте фото в настройках первого слайда.');
+ return slides;
+}
+
+/* Подгонка: уменьшаем шрифт, пока текст не помещается в рабочую область. */
+async function gFit(slides,rep){
+ const host=document.createElement('div');host.style.cssText='position:fixed;left:-20000px;top:0;visibility:hidden;pointer-events:none';document.body.appendChild(host);
+ const saved=project;project={...project,slides};
+ const render=i=>{host.innerHTML=slideHTML(slides[i],i,slides.length);return host.firstElementChild};
+ const textIssues=(el,s)=>diagnostics(el,s).filter(x=>/^(Текст|Блоки)/.test(x));
+ try{
+  host.innerHTML=slides.map((s,i)=>slideHTML(s,i,slides.length)).join('');
+  await document.fonts.ready;
+  slides.forEach((s,i)=>{
+   for(let k=0;k<16;k++){if(!textIssues(render(i),s).length)return;
+    if(s.size>(s.layout==='cover'?28:24))s.size-=2;else if(s.bodySize>13)s.bodySize-=1;else break}
+   if(textIssues(render(i),s).length)rep.bad.push(i+1);
+  });
+ }finally{project=saved;host.remove()}
+}
+function gShowReport(rep,slides){
+ const el=$('buildReport');if(!el)return;
+ const kinds=slides.map(s=>types[s.layout][0]);
+ let html=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><strong>Собрано ${slides.length} слайдов</strong><button id="closeReport" aria-label="Скрыть отчёт" style="padding:2px 8px">×</button></div><div>${esc(kinds.join(' · '))}</div>`;
+ if(rep.fixes.length)html+=`<div style="margin-top:6px"><b>Поправлено в тексте:</b> ${esc(rep.fixes.join('; '))}.</div>`;
+ if(rep.bad.length)html+=`<div style="margin-top:6px"><b>Не помещается текст:</b> слайды ${rep.bad.join(', ')}. Сократите текст или разделите слайд.</div>`;
+ for(const w of rep.warn)html+=`<div style="margin-top:6px">• ${esc(w)}</div>`;
+ el.innerHTML=html;el.className='status'+(rep.bad.length||rep.warn.length?' bad':'');el.style.display='';
+ $('closeReport').onclick=()=>{el.style.display='none'};
+}
+
 $('aiTask').onclick=()=>$('readyTextDialog').showModal();
 $('closeReadyText').onclick=()=>$('readyTextDialog').close();
-
 $('buildReadyText').onclick=async()=>{
  const btn=$('buildReadyText');$('readyError').textContent='';
  if(!$('readyText').value.trim()){$('readyError').textContent='Вставьте тексты слайдов.';return}
  btn.disabled=true;btn.textContent='Собираем…';
  try{
- const f=$('readyCover').files[0],photo=f?await readImage(f,2400):'';
- const slides=createReadySlides($('readyText').value,photo,$('readyAlign').value,$('readyTheme').value);
- mutate(()=>{project={version:1,handle:project.handle,authorAvatar:project.authorAvatar||permanentAvatar,slides};selected=0});
- $('readyTextDialog').close();toast('Готово: '+slides.length+' слайдов. Тексты сохранены.');
+  const f=$('readyCover').files[0],photo=f?await readImage(f,2400):'';
+  const rep={fixes:[],warn:[],bad:[]};
+  const slides=createReadySlides($('readyText').value,photo,$('readyAlign').value,$('readyTheme').value,rep);
+  await gFit(slides,rep);
+  mutate(()=>{project={version:1,handle:project.handle,authorAvatar:project.authorAvatar||permanentAvatar,slides};selected=0});
+  $('readyTextDialog').close();gShowReport(rep,slides);toast('Готово: '+slides.length+' слайдов. Тексты сохранены.');
  }catch(e){$('readyError').textContent=e.message}finally{btn.disabled=false;btn.textContent='Сгенерировать карусель'}
 };
 </script></body></html>
